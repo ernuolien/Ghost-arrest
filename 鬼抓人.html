@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>鬼抓人</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+
+    <style>
+        :root{
+        --time:60;
+/* --playbtn:0; */
+     }
+    #person1{
+        position: fixed;
+        /* var(--Person1Pos_x)*1px; */
+        top: 400px;
+        right: 300px; 
+    /* transform: translate( var(--Person1Pos_x)*1px,var(--Person1Pos_y)*1px); */
+    }
+    #person2{
+        position: fixed;
+        top: 200px;
+        right: 300px; 
+    }
+    #person3{
+        position: fixed;
+        
+        top: 400px;
+        right: 500px; 
+    }
+
+    #square1{
+        height: 100px;
+        width:100px;
+        background-color:blanchedalmond;
+    }
+    #square2{
+        height: 100px;
+        width:100px;
+        background-color:blanchedalmond;
+        position: absolute;
+        top: 0px;
+        right: 29px;
+    }
+    #square3{
+        height: 100px;
+        width:100px;
+        background-color:blanchedalmond;
+        position: absolute;
+        top: 430px;
+        right: 649px;
+    }
+    #square4{
+        height: 100px;
+        width:100px;
+        background-color:blanchedalmond;
+        position: absolute;
+        top: 430px;
+        right: 29px;
+    }
+    .container{
+        border-style:solid;
+        height: 570px;
+        background-color:cadetblue;
+        padding:20px 10px 0px;
+    }
+
+    .scoreboard{
+        background-color:#eee;
+        padding:400px 10px 0px;
+        height: 530px;
+        border-style: dashed;
+    }
+    .player{
+        background-color: coral;
+        margin:auto;
+        margin-bottom: 20px;
+        width:200px;
+        height: 80px;
+        border-radius:8%;
+        padding: 5px;
+        text-align: center;
+        color: black;
+        font-family:"calibri", Garamond, 'Comic Sans';
+        font-size: 20px;
+        position: relative;
+        bottom:180px;
+    }
+    .title{
+        position: absolute;
+        top:30px;
+        left:35px;
+    }
+    .textarea{
+        background-color: rgba(39, 110, 86, 0.815);
+        position: absolute;
+        top:80px;
+        left:45px;
+        width: 200px;
+        height: 120px;
+        text-align: center;
+        border-radius: 5%;
+    }
+    .textarea button{
+        border-radius: 8px;
+        position: relative;
+        top:20px;
+    }
+    .btn-warning{
+        margin:20px 0px 30px;
+    }
+    .timer{
+        background-color: #eee;
+        font-size: 20px;
+        text-align: center;
+        font-family:monospace;
+        border-radius: 8%;
+        position: relative;
+        top:100px;
+    }
+    .platform{
+        background-color:burlywood;
+        height:530px;
+        width:720px;
+    }
+    .safe{
+        text-align: center;
+        line-height: 100px;
+        color: gray;;
+    }
+
+    
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+
+        var keyCodeArry = [];
+        document.onkeydown = function (ev) {
+            var oEvent = ev || event;
+            keyCode = oEvent.keyCode;
+            keyCodeArry = addKeyCodeArry(keyCode, keyCodeArry);
+            console.log(keyCodeArry);
+        }
+        const docstyle = document.documentElement.style;
+        var iniperson1_x = 300;
+        var iniperson1_y = 400;
+        var iniperson2_x = 300;
+        var iniperson2_y = 200;
+        var iniperson3_x = 500;
+        var iniperson3_y = 400;
+        var playbtn = 0;
+        var count1 = 0, count2 = 0, count3 = 0;
+        var flag1 = 0, flag2 = 0, flag3 = 0, flag4 = 0;
+
+        window.addEventListener("keydown", moveSomething, false);
+
+
+
+
+
+        function moveSomething(e) {
+            // alert(e.keyCode)
+            if (playbtn == 1) {
+                if (ghostcontrol[0] == 1) {
+                    for (var i = 0; i <= keyCodeArry.length - 1; i++) {
+                        switch (keyCodeArry[i]) {
+                            case 37:
+                                // left key pressed
+                                if (iniperson1_x > 750) {
+                                    break;
+                                }
+                                if (iniperson1_x >640 && iniperson1_y>360 && iniperson1_y <480){
+                                    break;
+                                }  
+                                if (iniperson1_x > 640 && iniperson1_y > -50 && iniperson1_y < 100){
+                                    break;
+                                }
+                                iniperson1_x += 3;
+                                $('#person1').css("right", iniperson1_x + "px");
+                                break;
+
+                            case 38:
+                                if (iniperson1_y < 0) {
+                                    break;
+                                }
+                                if (iniperson1_y < 100 && iniperson1_x > 50 && iniperson1_x < 150){
+                                    break;
+                                }
+                                if (iniperson1_y < 100 && iniperson1_x >645 && iniperson1_x<770){
+                                    break;
+                                }
+                                // up key pressed
+                                iniperson1_y -= 3;
+                                $('#person1').css("top", iniperson1_y + "px");
+                                break;
+                            case 39:
+                                if (iniperson1_x < 70) {
+                                    break;
+                                }
+                                if (iniperson1_x < 170 && iniperson1_y >360 && iniperson1_y <480){
+                                    break;
+                                }
+                                if(iniperson1_x < 170 && iniperson1_y >-50 && iniperson1_y < 100){
+                                    break;
+                                }
+                                // right key pressed
+                                iniperson1_x -= 3;
+                                $('#person1').css("right", iniperson1_x + "px");
+                                break;
+
+                            case 40:
+                                // down key pressed
+                                if (iniperson1_y > 460) {
+                                    break;
+                                }
+                                if (iniperson1_y > 360 && iniperson1_x > 50 && iniperson1_x < 150){
+                                    break;
+                                }
+                                if (iniperson1_y > 360 && iniperson1_x > 645 && iniperson1_y < 770){
+                                    break;
+                                }
+                                iniperson1_y += 3;
+                                $('#person1').css("top", iniperson1_y + "px");
+                                break;
+
+///////////////////////////////////////////////////////////////
+                            case 85:
+                                //person2 up 
+                                if (iniperson2_y < 0) {
+                                    break;
+                                }
+                                iniperson2_y -= 3;
+                                $('#person2').css("top", iniperson2_y + "px");
+                                break;
+                            case 74:
+                                //person2 down
+                                if (iniperson2_y > 460) {
+                                    break;
+                                }
+                                iniperson2_y += 3;
+                                $('#person2').css("top", iniperson2_y + "px");
+                                break;
+                            case 72:
+                                //person 2 left
+                                if (iniperson2_x > 750) {
+                                    break;
+                                }
+                                iniperson2_x += 3;
+                                $('#person2').css("right", iniperson2_x + "px");
+                                break;
+                            case 75:
+                                //person 2 right
+                                if (iniperson2_x < 70) {
+                                    break;
+                                }
+                                iniperson2_x -= 3;
+                                $('#person2').css("right", iniperson2_x + "px");
+                                break;
+        ///////////////////////////////////////////////////////////////
+                            case 87:
+                                if (iniperson3_y < 0) {
+                                    break;
+                                }
+                                iniperson3_y -= 3;
+                                $('#person3').css("top", iniperson3_y + "px");
+                                break;
+                            case 65:
+                                if (iniperson3_x > 750) {
+                                    break;
+                                }
+                                iniperson3_x += 3;
+                                $('#person3').css("right", iniperson3_x + "px");
+                                break;
+                            case 83:
+                                if (iniperson3_y > 460) {
+                                    break;
+                                }
+                                iniperson3_y += 3;
+                                $('#person3').css("top", iniperson3_y + "px");
+                                break;
+
+                            case 68:
+                                if (iniperson3_x < 70) {
+                                    break;
+                                }
+                                iniperson3_x -= 3;
+                                $('#person3').css("right", iniperson3_x + "px");
+                                break;
+                        }
+                    }
+                } else if (ghostcontrol[1] == 1) {
+                    for (var i = 0; i <= keyCodeArry.length - 1; i++) {
+                        switch (keyCodeArry[i]) {
+                            case 37:
+                                // left key pressed
+                                if (iniperson1_x > 750) {
+                                    break;
+                                }
+                                iniperson1_x += 3;
+                                $('#person1').css("right", iniperson1_x + "px");
+                                break;
+
+                            case 38:
+                                if (iniperson1_y < 0) {
+                                    break;
+                                }
+                                // up key pressed
+                                iniperson1_y -= 3;
+                                $('#person1').css("top", iniperson1_y + "px");
+                                break;
+                            case 39:
+                                if (iniperson1_x < 70) {
+                                    break;
+                                }
+                                iniperson1_x -= 3;
+                                $('#person1').css("right", iniperson1_x + "px");
+                                break;
+
+                            case 40:
+                                // down key pressed
+                                if (iniperson1_y > 460) {
+                                    break;
+                                }
+                                iniperson1_y += 3;
+                                $('#person1').css("top", iniperson1_y + "px");
+                                break;
+///////////////////////////////////////////////////////////////
+
+                            case 85:
+                                //person2 up 
+                                if (iniperson2_y < 0) {
+                                    break;
+                                }
+                                if (iniperson2_y < 100 && iniperson2_x > 50 && iniperson2_x < 150){
+                                    break;
+                                }
+                                if (iniperson2_y < 100 && iniperson2_x >645 && iniperson2_x<770){
+                                    break;
+                                }
+                                iniperson2_y -= 3;
+                                $('#person2').css("top", iniperson2_y + "px");
+                                break;
+                            case 74:
+                                //person2 down
+                                if (iniperson2_y > 460) {
+                                    break;
+                                }
+                                if (iniperson2_y > 360 && iniperson2_x > 50 && iniperson2_x < 150){
+                                    break;
+                                }
+                                if (iniperson2_y > 360 && iniperson2_x > 645 && iniperson2_y < 770){
+                                    break;
+                                }
+                                iniperson2_y += 3;
+                                $('#person2').css("top", iniperson2_y + "px");
+                                break;
+                            case 72:
+                                //person 2 left
+                                if (iniperson2_x > 750) {
+                                    break;
+                                }
+                                if (iniperson2_x >640 && iniperson2_y>360 && iniperson2_y <480){
+                                    break;
+                                }  
+                                if (iniperson2_x > 640 && iniperson2_y > -50 && iniperson2_y < 100){
+                                    break;
+                                }
+                                iniperson2_x += 3;
+                                $('#person2').css("right", iniperson2_x + "px");
+                                break;
+                            case 75:
+                                //person 2 right
+                                if (iniperson2_x < 70) {
+                                    break;
+                                }
+                                if (iniperson2_x < 170 && iniperson2_y >360 && iniperson2_y <480){
+                                    break;
+                                }
+                                if(iniperson2_x < 170 && iniperson2_y >-50 && iniperson2_y < 100){
+                                    break;
+                                }
+                                iniperson2_x -= 3;
+                                $('#person2').css("right", iniperson2_x + "px");
+                                break;
+            ///////////////////////////////////////////////////////////////
+                            case 87:
+                                if (iniperson3_y < 0) {
+                                    break;
+                                }
+                                iniperson3_y -= 3;
+                                $('#person3').css("top", iniperson3_y + "px");
+                                break;
+                            case 65:
+                                if (iniperson3_x > 750) {
+                                    break;
+                                }
+                                iniperson3_x += 3;
+                                $('#person3').css("right", iniperson3_x + "px");
+                                break;
+                            case 83:
+                                if (iniperson3_y > 460) {
+                                    break;
+                                }
+                                iniperson3_y += 3;
+                                $('#person3').css("top", iniperson3_y + "px");
+                                break;
+
+                            case 68:
+                                if (iniperson3_x < 70) {
+                                    break;
+                                }
+                                iniperson3_x -= 3;
+                                $('#person3').css("right", iniperson3_x + "px");
+                                break;
+                        }
+                    }
+                } else if (ghostcontrol[2] == 1) {
+                    for (var i = 0; i <= keyCodeArry.length - 1; i++) {
+                        switch (keyCodeArry[i]) {
+                            case 37:
+                                // left key pressed
+                                if (iniperson1_x > 750) {
+                                    break;
+                                }
+                                iniperson1_x += 3;
+                                $('#person1').css("right", iniperson1_x + "px");
+                                break;
+
+                            case 38:
+                                if (iniperson1_y < 0) {
+                                    break;
+                                }
+                                // up key pressed
+                                iniperson1_y -= 3;
+                                $('#person1').css("top", iniperson1_y + "px");
+                                break;
+                            case 39:
+                                if (iniperson1_x < 70) {
+                                    break;
+                                }
+                                iniperson1_x -= 3;
+                                $('#person1').css("right", iniperson1_x + "px");
+                                break;
+
+                            case 40:
+                                // down key pressed
+                                if (iniperson1_y > 460) {
+                                    break;
+                                }
+                                iniperson1_y += 3;
+                                $('#person1').css("top", iniperson1_y + "px");
+                                break;
+///////////////////////////////////////////////////////////////
+
+                            case 85:
+                                //person2 up 
+                                if (iniperson2_y < 0) {
+                                    break;
+                                }
+                                iniperson2_y -= 3;
+                                $('#person2').css("top", iniperson2_y + "px");
+                                break;
+                            case 74:
+                                //person2 down
+                                if (iniperson2_y > 460) {
+                                    break;
+                                }
+                                iniperson2_y += 3;
+                                $('#person2').css("top", iniperson2_y + "px");
+                                break;
+                            case 72:
+                                //person 2 left
+                                if (iniperson2_x > 750) {
+                                    break;
+                                }
+                                iniperson2_x += 3;
+                                $('#person2').css("right", iniperson2_x + "px");
+                                break;
+                            case 75:
+                                //person 2 right
+                                if (iniperson2_x < 70) {
+                                    break;
+                                }
+                                iniperson2_x -= 3;
+                                $('#person2').css("right", iniperson2_x + "px");
+                                break;
+            ///////////////////////////////////////////////////////////////
+                            case 87:
+                                if (iniperson3_y < 0) {
+                                    break;
+                                }
+                                if (iniperson3_y < 100 && iniperson3_x > 50 && iniperson3_x < 150){
+                                    break;
+                                }
+                                if (iniperson3_y < 100 && iniperson3_x >640 && iniperson3_x<770){
+                                    break;
+                                }
+                                //up 
+                                iniperson3_y -= 3;
+                                $('#person3').css("top", iniperson3_y + "px");
+                                break;
+                            case 65:
+                                if (iniperson3_x > 750) {
+                                    break;
+                                }
+                                if (iniperson3_x >640 && iniperson3_y>360 && iniperson3_y <480){
+                                    break;
+                                }  
+                                if (iniperson3_x > 640 && iniperson3_y > -50 && iniperson3_y < 100){
+                                    break;
+                                }
+                                //left
+                                iniperson3_x += 3;
+                                $('#person3').css("right", iniperson3_x + "px");
+                                break;
+                            case 83:
+                                if (iniperson3_y > 460) {
+                                    break;
+                                }
+                                if (iniperson3_y > 360 && iniperson3_x > 50 && iniperson3_x < 150){
+                                    break;
+                                }
+                                if (iniperson3_y > 360 && iniperson3_x > 645 && iniperson3_y < 770){
+                                    break;
+                                }
+                                //down
+                                iniperson3_y += 3;
+                                $('#person3').css("top", iniperson3_y + "px");
+                                break;
+
+                            case 68:
+                                if (iniperson3_x < 70) {
+                                    break;
+                                }
+                                if (iniperson3_x < 170 && iniperson3_y >360 && iniperson3_y <480){
+                                    break;
+                                }
+                                if(iniperson3_x < 170 && iniperson3_y >-50 && iniperson3_y < 100){
+                                    break;
+                                }
+                                //right
+                                iniperson3_x -= 3;
+                                $('#person3').css("right", iniperson3_x + "px");
+                                break;
+                        }
+                    }
+                }
+            }
+            player1counter();
+            player2counter();
+            player3counter();
+        }
+
+        document.onkeyup = function (ev) {
+            var oEvent = ev || event;
+            keyCode = oEvent.keyCode;
+            keyCodeArry = deletKeyCodeArry(keyCode, keyCodeArry);
+            console.log(keyCodeArry);
+        }
+        function addKeyCodeArry(num, arr) {
+            var check = 0;
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] == num) {
+                    check = 1;
+                }
+            }
+            if (check == 0) {
+                arr.push(num);
+            }
+            return arr;
+        }
+        function deletKeyCodeArry(num, arr) {
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] == num) {
+                    arr.splice(i, 1);
+                }
+            }
+            return arr;
+        }
+
+        //安全區計數器
+        function player1counter() {
+            //sq4
+            if (iniperson1_x == 150 && iniperson1_y > 380 && iniperson1_y < 480) {
+                flag4 = 1;
+            }
+            if (iniperson1_x == 147 && flag4 == 1 && iniperson1_y > 380 && iniperson1_y < 480) {
+                count1++;
+                flag4 = 0;
+                $("#play1count").text("count:" + count1);
+            }
+            if (iniperson1_y == 382 && iniperson1_x > 50 && iniperson1_x < 150) {
+                flag4 = 1;
+            }
+            if (iniperson1_y == 385 && flag4 == 1 && iniperson1_x > 50 && iniperson1_x < 150) {
+                count1++;
+                flag4 = 0;
+                $("#play1count").text("count:" + count1);
+            }
+            //sq3
+            if (iniperson1_x == 672 && iniperson1_y > 380 && iniperson1_y < 480) {
+                flag3 = 1;
+            }
+            if (iniperson1_x == 675 && flag3 == 1 && iniperson1_y > 380 && iniperson1_y < 480) {
+                count1++;
+                flag3 = 0;
+                $("#play1count").text("count:" + count1);
+            }
+            if (iniperson1_y == 382 && iniperson1_x > 672 && iniperson1_x < 770) {
+                flag3 = 1;
+            }
+            if (iniperson1_y == 385 && flag3 == 1 && iniperson1_x > 672 && iniperson1_x < 770) {
+                count1++;
+                flag3 = 0;
+                $("#play1count").text("count:" + count1);
+            }
+            //sq2
+            if (iniperson1_x == 150 && iniperson1_y > -50 && iniperson1_y < 49) {
+                flag2 = 1;
+            }
+            if (iniperson1_x == 147 && flag2 == 1 && iniperson1_y > -50 && iniperson1_y < 49) {
+                count1++;
+                flag2 = 0;
+                $("#play1count").text("count:" + count1);
+            }
+
+            if (iniperson1_y == 49 && iniperson1_x > 50 && iniperson1_x < 150) {
+                flag2 = 1;
+            }
+            if (iniperson1_y == 46 && flag2 == 1 && iniperson1_x > 50 && iniperson1_x < 150) {
+                count1++;
+                flag2 = 0;
+                $("#play1count").text("count:" + count1);
+            }
+            //sq1
+            if (iniperson1_x == 672 && iniperson1_y > -50 && iniperson1_y < 49) {
+                flag1 = 1;
+            }
+            if (iniperson1_x == 675 && flag1 == 1 && iniperson1_y > -50 && iniperson1_y < 49) {
+                count1++;
+                flag1 = 0;
+                $("#play1count").text("count:" + count1);
+            }
+
+            if (iniperson1_y == 49 && iniperson1_x > 672 && iniperson1_x < 770) {
+                flag1 = 1;
+            }
+            if (iniperson1_y == 46 && flag1 == 1 && iniperson1_x > 672 && iniperson1_x < 770) {
+                count1++;
+                flag1 = 0;
+                $("#play1count").text("count:" + count1);
+            }
+        }
+        function player2counter() {
+            //sq4
+            if (iniperson2_x == 150 && iniperson2_y > 380 && iniperson2_y < 480) {
+                flag4 = 1;
+            }
+            if (iniperson2_x == 147 && flag4 == 1 && iniperson2_y > 380 && iniperson2_y < 480) {
+                count2++;
+                flag4 = 0;
+                $("#play2count").text("count:" + count2);
+            }
+            if (iniperson2_y == 383 && iniperson2_x > 50 && iniperson2_x < 150) {
+                flag4 = 1;
+            }
+            if (iniperson2_y == 386 && flag4 == 1 && iniperson2_x > 50 && iniperson2_x < 150) {
+                count2++;
+                flag4 = 0;
+                $("#play2count").text("count:" + count2);
+            }
+            //sq3
+            if (iniperson2_x == 672 && iniperson2_y > 380 && iniperson2_y < 480) {
+                flag3 = 1;
+            }
+            if (iniperson2_x == 675 && flag3 == 1 && iniperson2_y > 380 && iniperson2_y < 480) {
+                count2++;
+                flag3 = 0;
+                $("#play2count").text("count:" + count2);
+            }
+            if (iniperson2_y == 383 && iniperson2_x > 672 && iniperson2_x < 770) {
+                flag3 = 1;
+            }
+            if (iniperson2_y == 386 && flag3 == 1 && iniperson2_x > 672 && iniperson2_x < 770) {
+                count2++;
+                flag3 = 0;
+                $("#play2count").text("count:" + count2);
+            }
+            //sq2
+            if (iniperson2_x == 150 && iniperson2_y > -50 && iniperson2_y < 49) {
+                flag2 = 1;
+            }
+            if (iniperson2_x == 147 && flag2 == 1 && iniperson2_y > -50 && iniperson2_y < 49) {
+                count2++;
+                flag2 = 0;
+                $("#play2count").text("count:" + count2);
+            }
+
+            if (iniperson2_y == 50 && iniperson2_x > 50 && iniperson2_x < 150) {
+                flag2 = 1;
+            }
+            if (iniperson2_y == 47 && flag2 == 1 && iniperson2_x > 50 && iniperson2_x < 150) {
+                count2++;
+                flag2 = 0;
+                $("#play2count").text("count:" + count2);
+            }
+            //sq1
+            if (iniperson2_x == 672 && iniperson2_y > -50 && iniperson2_y < 49) {
+                flag1 = 1;
+            }
+            if (iniperson2_x == 675 && flag1 == 1 && iniperson2_y > -50 && iniperson2_y < 49) {
+                count2++;
+                flag1 = 0;
+                $("#play2count").text("count:" + count2);
+            }
+
+            if (iniperson2_y == 50 && iniperson2_x > 672 && iniperson2_x < 770) {
+                flag1 = 1;
+            }
+            if (iniperson2_y == 47 && flag1 == 1 && iniperson2_x > 672 && iniperson2_x < 770) {
+                count2++;
+                flag1 = 0;
+                $("#play2count").text("count:" + count2);
+            }
+        }
+        function player3counter() {
+            //sq4
+            if (iniperson3_x == 149 && iniperson3_y > 380 && iniperson3_y < 480) {
+                flag4 = 1;
+            }
+            if (iniperson3_x == 146 && flag4 == 1 && iniperson3_y > 380 && iniperson3_y < 480) {
+                count3++;
+                flag4 = 0;
+                $("#play3count").text("count:" + count3);
+            }
+            if (iniperson3_y == 382 && iniperson3_x > 50 && iniperson3_x < 150) {
+                flag4 = 1;
+            }
+            if (iniperson3_y == 385 && flag4 == 1 && iniperson3_x > 50 && iniperson3_x < 150) {
+                count3++;
+                flag4 = 0;
+                $("#play3count").text("count:" + count3);
+            }
+            //sq3
+            if (iniperson3_x == 671 && iniperson3_y > 380 && iniperson3_y < 480) {
+                flag3 = 1;
+            }
+            if (iniperson3_x == 674 && flag3 == 1 && iniperson3_y > 380 && iniperson3_y < 480) {
+                count3++;
+                flag3 = 0;
+                $("#play3count").text("count:" + count3);
+            }
+            if (iniperson3_y == 382 && iniperson3_x > 672 && iniperson3_x < 770) {
+                flag3 = 1;
+            }
+            if (iniperson3_y == 385 && flag3 == 1 && iniperson3_x > 672 && iniperson3_x < 770) {
+                count3++;
+                flag3 = 0;
+                $("#play3count").text("count:" + count3);
+            }
+            //sq2
+            if (iniperson3_x == 149 && iniperson3_y > -50 && iniperson3_y < 49) {
+                flag2 = 1;
+            }
+            if (iniperson3_x == 146 && flag2 == 1 && iniperson3_y > -50 && iniperson3_y < 49) {
+                count3++;
+                flag2 = 0;
+                $("#play3count").text("count:" + count3);
+            }
+
+            if (iniperson3_y == 49 && iniperson3_x > 50 && iniperson3_x < 150) {
+                flag2 = 1;
+            }
+            if (iniperson3_y == 46 && flag2 == 1 && iniperson3_x > 50 && iniperson3_x < 150) {
+                count3++;
+                flag2 = 0;
+                $("#play3count").text("count:" + count3);
+            }
+            //sq1
+            if (iniperson3_x == 671 && iniperson3_y > -50 && iniperson3_y < 49) {
+                flag1 = 1;
+            }
+            if (iniperson3_x == 674 && flag1 == 1 && iniperson3_y > -50 && iniperson3_y < 49) {
+                count3++;
+                flag1 = 0;
+                $("#play3count").text("count:" + count3);
+            }
+
+            if (iniperson3_y == 49 && iniperson3_x > 672 && iniperson3_x < 770) {
+                flag1 = 1;
+            }
+            if (iniperson3_y == 46 && flag1 == 1 && iniperson3_x > 672 && iniperson3_x < 770) {
+                count3++;
+                flag1 = 0;
+                $("#play3count").text("count:" + count3);
+            }
+        }
+
+        //輸入文字框
+        $(document).ready(function () {
+            var i = 0;
+            $("#Enter").click(function () {
+                var playername = 0;
+                if (i == 0) {
+                    playername = $('#inputname').val()
+                    if (playername != 0) {
+                        $("#player1").text(playername);
+                        i++;
+                    }
+                } else if (i == 1) {
+                    playername = $('#inputname').val()
+                    if (playername != 0) {
+                        $("#player2").text(playername);
+                        i++;
+                    }
+                } else if (i == 2) {
+                    playername = $('#inputname').val()
+                    if (playername != 0) {
+                        $("#player3").text(playername);
+                        i++;
+                    }
+                }
+            });
+        });
+
+
+    </script>
+
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+
+                <div class="scoreboard">
+                    <h2 class="title">Ghost Chasing</h2>
+                    <div class="textarea">
+                        <h5>Enter player's name </h5>
+                        <input type="text" id="inputname">
+                        <button id="Enter">Enter</button>
+                    </div>
+
+                    <div class="player">
+                        <h2 id="player1">player 1</h2>
+                        <p id="play1count">count:0</p>
+                    </div>
+                    <div class="player">
+                        <h2 id="player2">player 2</h2>
+                        <p id="play2count">count:0</p>
+                    </div>
+                    <div class="player">
+                        <h2 id="player3">player 3</h2>
+                        <p id="play3count">count:0</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-1" style="padding:100px 0px 0px">
+                <button type="button" id="play" class="btn btn-warning">play</button>
+                <br>
+
+                <button type="button" id="stop" class="btn btn-warning">stop</button>
+                <br>
+                <button type="button" id="restart" class="btn btn-warning">restart</button>
+                <div class="timer">
+                    <p id="timer">Time:60</p>
+                </div>
+            </div>
+
+            <div class="col-sm-8" style=" margin:0px 0px 0px;">
+
+                <div class="platform">
+
+                    <div id="square1">
+                        <h4 class="safe">SAFE</h4>
+                    </div>
+                    <div id="square2">
+                        <h4 class="safe">SAFE</h4>
+                    </div>
+                    <div id="square3">
+                        <h4 class="safe">SAFE</h4>
+                    </div>
+                    <div id="square4">
+                        <h4 class="safe">SAFE</h4>
+                    </div>
+                    <!-- <div style="padding:200px 0px 0px;"></div> -->
+
+                    <img id="person1" src="char_peach.png" alt="Smiley face" height="100" width="100">
+
+                    <img id="person2" src="Mario_NSMBW.png" alt="Smiley face" height="100" width="100">
+                    <img id="person3" src="250px-Toad.png" alt="Smiley face" height="100" width="100">
+                    <img id="ghost" src="chara05.png" alt="Smiley face" height="100" width="100" style="display:none;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var t = 60;
+        var timelinetimer;
+        var ghostnumber;
+        var ghostflag = 1;
+        var ghostcontrol = [3, 3, 3];
+        $("#play").click(function () {
+            playbtn = 1;
+            timelinetimer = setInterval(function showTime() {
+                t -= 1;
+                document.getElementById('timer').innerHTML = "Time:" + t;
+                if (t == 0) {
+                    clearInterval(timelinetimer);
+                }
+            }, 1000);
+            if (ghostflag == 1) {               //避免產生多隻鬼
+                ghostnumber = Random(3);        //隨機鬼玩家編號
+                $('#person' + ghostnumber).attr("src", "chara05.png");
+                ghostflag = 0;
+                ghostnumber--;
+                ghostcontrol[ghostnumber] = 1;
+            }
+
+        });
+        $("#stop").click(function () {
+            playbtn = 0;
+            // alert('6')
+            clearInterval(timelinetimer);
+        });
+
+        function Random(x) {
+            return Math.floor(Math.random() * x) + 1;
+        };
+    </script>
+
+
+
+
+</body>
+
+</html>
